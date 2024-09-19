@@ -1,5 +1,9 @@
 # scaler
 
+Manually scale up or down your deployments
+
+![screenshot](screenshot/list.png)
+
 ## Requirements
 
 - access to kubeconfig
