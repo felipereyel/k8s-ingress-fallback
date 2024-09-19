@@ -31,3 +31,5 @@ tmp
 
 # templ
 src/components/*.go
+
+main

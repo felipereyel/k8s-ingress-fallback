@@ -1,5 +1,5 @@
 # Build the Go binary
-FROM golang:1.21-alpine AS goapp
+FROM golang:1.23-alpine AS goapp
 WORKDIR /app
 
 COPY go.mod go.sum ./
@@ -16,8 +16,5 @@ RUN go build -o ./goapp
 FROM alpine:latest as release
 COPY --from=goapp /app/goapp /goapp
 
-COPY migrations/ /migrations
-ENV MIGRATIONS_DIR=/migrations
-
 WORKDIR /app
-CMD ["/goapp", "start"]
+CMD ["/goapp"]
