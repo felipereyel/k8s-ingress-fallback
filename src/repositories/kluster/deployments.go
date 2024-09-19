@@ -13,12 +13,24 @@ func ListDeployments() ([]v1.Deployment, error) {
 		return nil, err
 	}
 
-	deployments, err := clientset.AppsV1().Deployments("").List(context.TODO(), metav1.ListOptions{})
+	deploymentList, err := clientset.AppsV1().Deployments("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
 
-	return deployments.Items, nil
+	deployments := make([]v1.Deployment, 0)
+	for _, deployment := range deploymentList.Items {
+		annotations := deployment.GetAnnotations()
+		if annotations == nil {
+			continue
+		}
+
+		if annotations["scaler.reyel.cloud/enabled"] == "true" {
+			deployments = append(deployments, deployment)
+		}
+	}
+
+	return deployments, nil
 }
 
 func ScaleDeployment(deployment v1.Deployment, replicas int32) error {

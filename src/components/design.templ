@@ -83,9 +83,9 @@ templ DeploymentListPage(deployments []v1.Deployment) {
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         if dpl.Spec.Replicas == nil || *dpl.Spec.Replicas == 0 {
-                                            <button class="font-medium text-blue-600 dark:text-red-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Up</button>
+                                            <button class="font-medium text-blue-600 dark:text-green-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Up</button>
                                         } else {
-                                            <button class="font-medium text-blue-600 dark:text-green-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Down</button>
+                                            <button class="font-medium text-blue-600 dark:text-red-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Down</button>
                                         }
                                     </td>
                                 </tr>
