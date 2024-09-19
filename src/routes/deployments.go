@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"scaler/src/components"
 	"scaler/src/repositories/kluster"
 
@@ -19,10 +18,27 @@ func deploymentList(c *fiber.Ctx) error {
 }
 
 func deploymentToggle(c *fiber.Ctx) error {
+	c.Set("HX-Redirect", "/")
 	namespace := c.Params("namespace")
 	deployment := c.Params("deployment")
 
-	fmt.Println("Toggling deployment", namespace, deployment)
+	deployments, err := kluster.ListDeployments()
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
 
-	return sendPage(c, components.NotFoundPage())
+	for _, d := range deployments {
+		if d.Namespace == namespace && d.Name == deployment {
+			replicas := 0
+			if d.Spec.Replicas != nil && *d.Spec.Replicas == 0 {
+				replicas = 1
+			}
+
+			if err = kluster.ScaleDeployment(d, int32(replicas)); err != nil {
+				return c.SendStatus(fiber.StatusInternalServerError)
+			}
+		}
+	}
+
+	return c.SendStatus(fiber.StatusOK)
 }

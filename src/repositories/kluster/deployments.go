@@ -20,3 +20,15 @@ func ListDeployments() ([]v1.Deployment, error) {
 
 	return deployments.Items, nil
 }
+
+func ScaleDeployment(deployment v1.Deployment, replicas int32) error {
+	clientset, err := getConfig()
+	if err != nil {
+		return err
+	}
+
+	deployment.Spec.Replicas = &replicas
+	_, err = clientset.AppsV1().Deployments(deployment.Namespace).Update(context.TODO(), &deployment, metav1.UpdateOptions{})
+
+	return err
+}

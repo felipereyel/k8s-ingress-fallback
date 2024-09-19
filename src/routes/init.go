@@ -10,7 +10,7 @@ func healthzHandler(c *fiber.Ctx) error {
 
 func Init(app *fiber.App) error {
 
-	app.Post("/toggle/:id", deploymentToggle)
+	app.Post("/toggle/:namespace/:deployment", deploymentToggle)
 	app.Get("/", deploymentList)
 
 	app.Use("/healthz", healthzHandler)
