@@ -1,17 +1,14 @@
 package components
 
-import (
-    "fmt"
-	"goth/src/models"
-)
-
 // Full Page
+	
+import v1 "k8s.io/api/apps/v1"
 
 templ rawPage(title string) {
     <!DOCTYPE html>
     <html>
         <head>
-            <title>{ title } | GOTH</title>
+            <title>{ title } | scaler</title>
             <meta charset="UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             <script src="https://cdn.tailwindcss.com"></script>
@@ -54,74 +51,48 @@ templ ErrorPage() {
     }
 }
 
-templ authenticatedPage(title string, breadcrumb, description string) {
-    @rawPage(title) {
-        <div class="px-4 sm:px-8 max-w-5xl m-auto">
+templ DeploymentListPage(deployments []v1.Deployment) {
+    @rawPage("Deployments List") {
+        <div class="px-4 sm:px-8 max-w-5xl m-auto pt-2">
             <div class="flex flex-col">
                 <div class="flex flex-row justify-between items-center">
-                    <a href="/" class="text-2xl">{breadcrumb}</a>
-                    <a href="/auth/logout" class="bg-slate-800 border border-slate-600 rounded px-2">Logout</a>
+                    <a href="/" class="text-4xl">Scaler</a>
+                    <p class="text-base text-gray-500">Manually scale up or down your deployments</p>
                 </div>
-                if description != "" {
-                    <p class="mt-2 text-xs mb-4 text-gray-500">{description}</p>
-                }
-                <div class="mt-4">
-                    { children... }
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Deployment
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Namespace
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right">
+                                    Scale
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            for _, dpl := range deployments {
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{dpl.ObjectMeta.Name}</th>
+                                    <td class="px-6 py-4">
+                                        <span class="bg-blue-100 text-blue-800 text-xs font-medium me-1 px-1.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">{dpl.ObjectMeta.Namespace}</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        if dpl.Spec.Replicas == nil || *dpl.Spec.Replicas == 0 {
+                                            <button class="font-medium text-blue-600 dark:text-red-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Up</button>
+                                        } else {
+                                            <button class="font-medium text-blue-600 dark:text-green-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Down</button>
+                                        }
+                                    </td>
+                                </tr>
+                            } 
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-        </div>
-    }
-}
-
-templ PostLogoutPage() {
-    @rawPage("Logout") {
-        <div class="px-4 sm:px-8 max-w-5xl m-auto">
-            <div class="flex flex-col">
-                <div class="flex flex-row justify-between items-center">
-                    <a href="/" class="text-2xl">Home</a>
-                    <a href="/auth/login" class="bg-slate-800 border border-slate-600 rounded px-2">Login</a>
-                </div>
-                <p class="mt-2 text-xs mb-4 text-gray-500">You need to login to proceed</p>
-            </div>
-        </div>
-    }
-}
-
-// Tasks Views
-
-templ TaskListPage(tasks []models.Task) {
-    @authenticatedPage("Tasks List", "Tasks", "Open Tasks To Do") {
-        <div>
-            <ul id="wrapper" class="border border-slate-600 rounded overflow-hidden shadow-md">
-                if len(tasks) > 0 {
-                    for _, task := range tasks {
-                        <li class="px-4 py-2 bg-slate-800 hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-slate-600 transition-all duration-300 ease-in-out">
-                            <a href={ templ.URL("/edit/" + task.Id) }>{task.Title}</a>
-                        </li>
-                    }
-                } else {
-                    <li class="px-4 py-2 border border-slate-600 border-dashed rounded overflow-hidden shadow-md">
-                        <span>No Tasks</span>
-                    </li>
-                }
-            </ul>
-            <div class="mt-4 text-center px-4 py-2 bg-blue-600 hover:bg-sky-100 hover:text-sky-900 border border-slate-600 rounded overflow-hidden shadow-md">
-                <a href={ templ.URL("/new") }>Create New Task</a>
-            </div>
-        </div>
-    }
-}
-
-templ TaskEditPage(task models.Task) {
-    @authenticatedPage("Task Editor", fmt.Sprintf("Tasks > %s", task.Title), "Edit this task") {
-        <div>
-            <div class="flex flex-col">
-                <label for="title" class="text-xs mb-1">Title</label>
-                <input hx-post={"/edit/" + task.Id} type="text" name="title" id="title" value={ task.Title } class="bg-slate-800 border border-slate-600 rounded px-2 py-1 mb-4" />
-            </div>
-            <div class="flex flex-col">
-                <label for="description" class="text-xs mb-1">Description</label>
-                <textarea hx-post={"/edit/" + task.Id} name="description" id="description" class="bg-slate-800 border border-slate-600 rounded px-2 py-1 mb-4">{ task.Description }</textarea>
             </div>
         </div>
     }

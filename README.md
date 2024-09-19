@@ -1,4 +1,4 @@
-# goth stack
+# scaler stack
 
 ## Components
 - Go + Fiber

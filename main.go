@@ -1,9 +1,11 @@
 package main
 
 import (
-	"goth/src/cmd"
+	"scaler/src/serve"
 )
 
 func main() {
-	cmd.Execute()
+	if err := serve.Serve(); err != nil {
+		panic(err.Error())
+	}
 }

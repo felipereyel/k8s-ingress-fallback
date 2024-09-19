@@ -2,7 +2,7 @@ package routes
 
 import (
 	"fmt"
-	"goth/src/components"
+	"scaler/src/components"
 
 	"github.com/gofiber/fiber/v2"
 )
