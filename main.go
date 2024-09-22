@@ -1,11 +1,11 @@
 package main
 
 import (
-	"scaler/src/serve"
+	"scaler/internal/server"
 )
 
 func main() {
-	if err := serve.Serve(); err != nil {
+	if err := server.SetupAndListen(); err != nil {
 		panic(err.Error())
 	}
 }

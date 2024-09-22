@@ -1,28 +1,27 @@
 package routes
 
 import (
-	"scaler/src/components"
-	"scaler/src/repositories/kluster"
+	"scaler/internal/components"
+	"scaler/internal/services"
 
 	"github.com/gofiber/fiber/v2"
-	v1 "k8s.io/api/apps/v1"
 )
 
-func deploymentList(c *fiber.Ctx) error {
-	deployments, err := kluster.ListDeployments()
+func deploymentList(svcs *services.Services, c *fiber.Ctx) error {
+	deployments, err := svcs.KubeClient.ListDeployments()
 	if err != nil {
-		deployments = []v1.Deployment{}
+		return err
 	}
 
 	return sendPage(c, components.DeploymentListPage(deployments))
 }
 
-func deploymentToggle(c *fiber.Ctx) error {
+func deploymentToggle(svcs *services.Services, c *fiber.Ctx) error {
 	c.Set("HX-Redirect", "/")
 	namespace := c.Params("namespace")
 	deployment := c.Params("deployment")
 
-	deployments, err := kluster.ListDeployments()
+	deployments, err := svcs.KubeClient.ListDeployments()
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -34,7 +33,7 @@ func deploymentToggle(c *fiber.Ctx) error {
 				replicas = 1
 			}
 
-			if err = kluster.ScaleDeployment(d, int32(replicas)); err != nil {
+			if err = svcs.KubeClient.ScaleDeployment(d, int32(replicas)); err != nil {
 				return c.SendStatus(fiber.StatusInternalServerError)
 			}
 		}

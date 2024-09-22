@@ -2,12 +2,12 @@ package routes
 
 import (
 	"fmt"
-	"scaler/src/components"
+	"scaler/internal/components"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func ErrorHandler(c *fiber.Ctx, err error) error {
+func errorHandler(c *fiber.Ctx, err error) error {
 	c.SendStatus(fiber.StatusInternalServerError)
 	fmt.Printf("Route Error [%s]: %v\n", c.Path(), err)
 	return sendPage(c, components.ErrorPage())

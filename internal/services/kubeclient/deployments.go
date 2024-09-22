@@ -1,4 +1,4 @@
-package kluster
+package kubeclient
 
 import (
 	"context"
@@ -7,13 +7,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func ListDeployments() ([]v1.Deployment, error) {
-	clientset, err := getConfig()
-	if err != nil {
-		return nil, err
-	}
-
-	deploymentList, err := clientset.AppsV1().Deployments("").List(context.TODO(), metav1.ListOptions{})
+func (kubeclient *KubeClient) ListDeployments() ([]v1.Deployment, error) {
+	deploymentList, err := kubeclient.clientset.AppsV1().Deployments("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}
@@ -33,14 +28,10 @@ func ListDeployments() ([]v1.Deployment, error) {
 	return deployments, nil
 }
 
-func ScaleDeployment(deployment v1.Deployment, replicas int32) error {
-	clientset, err := getConfig()
-	if err != nil {
-		return err
-	}
-
+func (kubeclient *KubeClient) ScaleDeployment(deployment v1.Deployment, replicas int32) error {
 	deployment.Spec.Replicas = &replicas
-	_, err = clientset.AppsV1().Deployments(deployment.Namespace).Update(context.TODO(), &deployment, metav1.UpdateOptions{})
+
+	_, err := kubeclient.clientset.AppsV1().Deployments(deployment.Namespace).Update(context.TODO(), &deployment, metav1.UpdateOptions{})
 
 	return err
 }

@@ -7,22 +7,14 @@ import (
 )
 
 type ServerConfigs struct {
-	ServerAddress string
+	ServerAddress     string
+	UseServiceAccount bool
 }
 
 func GetServerConfigs() ServerConfigs {
 	config := ServerConfigs{}
 
-	// config.Secret = os.Getenv("SECRET")
-	// if config.Secret == "" {
-	// 	newSecret, err := utils.RandomString(32)
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-
-	// 	config.Secret = newSecret
-	// 	fmt.Println("Generated new SECRET:", config.Secret)
-	// }
+	config.UseServiceAccount = (os.Getenv("USE_SA") == "true")
 
 	envPort := os.Getenv("PORT")
 	if envPort != "" {
