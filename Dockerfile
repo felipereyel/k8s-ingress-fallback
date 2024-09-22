@@ -7,7 +7,7 @@ RUN go mod download
 RUN go install github.com/a-h/templ/cmd/templ@latest
 
 COPY main.go  .
-COPY src/ src/
+COPY internal/ internal/
 
 RUN templ generate
 RUN go build -o ./goapp
