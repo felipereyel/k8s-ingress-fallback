@@ -20,12 +20,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: scaler
+  namespace: default
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: scaler-role
+  namespace: default
 rules:
   - apiGroups: ["apps"]
     resources: ["deployments"]
@@ -36,6 +38,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: scaler-binding
+  namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -43,6 +46,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: scaler
+    namespace: default
 
 ---
 apiVersion: apps/v1
@@ -63,6 +67,11 @@ spec:
       serviceAccountName: scaler
       containers:
       - name: scaler
-        image: ghcr.io/felipereyel/k8s-manual-scaler:lastest
+        image: ghcr.io/felipereyel/k8s-manual-scaler:latest
+        env:
+        - name: USE_SA
+          value: "true"
+        - name: PORT
+          value: "3000"
 
 ```
