@@ -75,3 +75,8 @@ spec:
           value: "3000"
 
 ```
+
+
+## TODO
+
+- Watch pods status
