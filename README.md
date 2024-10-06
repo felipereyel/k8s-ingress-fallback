@@ -79,4 +79,4 @@ spec:
 
 ## TODO
 
-- Watch pods status
+- Watch pods status: merge with project khono (https://github.com/felipereyel/khono/tree/main)
