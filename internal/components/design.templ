@@ -82,11 +82,10 @@ templ DeploymentListPage(deployments []v1.Deployment) {
                                         <span class="bg-blue-100 text-blue-800 text-xs font-medium me-1 px-1.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">{dpl.ObjectMeta.Namespace}</span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        if dpl.Spec.Replicas == nil || *dpl.Spec.Replicas == 0 {
-                                            <button class="font-medium text-blue-600 dark:text-green-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Up</button>
-                                        } else {
-                                            <button class="font-medium text-blue-600 dark:text-red-500 hover:underline" hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>Down</button>
-                                        }
+                                        <label class="inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" value="" class="sr-only peer" checked?={!(dpl.Spec.Replicas == nil || *dpl.Spec.Replicas == 0)} hx-post={ "/toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name }>
+                                            <div class="relative w-11 h-6 bg-red-500 rounded-full peer peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 dark:bg-red-900 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-red-900 peer-checked:bg-green-600"></div>
+                                        </label>
                                     </td>
                                 </tr>
                             } 
