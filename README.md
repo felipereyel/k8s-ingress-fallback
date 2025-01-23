@@ -81,8 +81,3 @@ spec:
 
 ### Details
 ![screenshot](screenshot/details.png)
-
-
-## TODO
-
-- Watch pods status: merge with project khono (https://github.com/felipereyel/khono/tree/main)
