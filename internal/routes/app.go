@@ -11,10 +11,11 @@ func GetApp(svcs *services.Services) *fiber.App {
 		ErrorHandler: errorHandler,
 	})
 
-	app.Post("/toggle/:namespace/:deployment", bind(svcs, deploymentToggle))
-	app.Get("/", bind(svcs, deploymentList))
+	app.Get("/", bind(svcs, home))
+	app.Get("/:namespace/:deployment", bind(svcs, details))
+	app.Post("/_toggle/:namespace/:deployment", bind(svcs, toggle))
 
-	app.Use("/healthz", healthzHandler)
+	app.Use("/_healthz", healthzHandler)
 	app.Use(notFoundHandler)
 
 	return app

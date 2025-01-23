@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func deploymentList(svcs *services.Services, c *fiber.Ctx) error {
+func home(svcs *services.Services, c *fiber.Ctx) error {
 	deployments, err := svcs.KubeClient.ListDeployments()
 	if err != nil {
 		return err
@@ -16,27 +16,36 @@ func deploymentList(svcs *services.Services, c *fiber.Ctx) error {
 	return sendPage(c, components.DeploymentListPage(deployments))
 }
 
-func deploymentToggle(svcs *services.Services, c *fiber.Ctx) error {
-	c.Set("HX-Redirect", "/")
+func details(svcs *services.Services, c *fiber.Ctx) error {
+	c.Set("HX-Refresh", "true")
 	namespace := c.Params("namespace")
-	deployment := c.Params("deployment")
+	name := c.Params("deployment")
 
-	deployments, err := svcs.KubeClient.ListDeployments()
+	d, err := svcs.KubeClient.GetDeployment(namespace, name)
 	if err != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	for _, d := range deployments {
-		if d.Namespace == namespace && d.Name == deployment {
-			replicas := 0
-			if d.Spec.Replicas != nil && *d.Spec.Replicas == 0 {
-				replicas = 1
-			}
+	return sendPage(c, components.DeploymentDetailsPage(d))
+}
 
-			if err = svcs.KubeClient.ScaleDeployment(d, int32(replicas)); err != nil {
-				return c.SendStatus(fiber.StatusInternalServerError)
-			}
-		}
+func toggle(svcs *services.Services, c *fiber.Ctx) error {
+	c.Set("HX-Refresh", "true")
+	namespace := c.Params("namespace")
+	name := c.Params("deployment")
+
+	d, err := svcs.KubeClient.GetDeployment(namespace, name)
+	if err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	replicas := 0
+	if d.Spec.Replicas != nil && *d.Spec.Replicas == 0 {
+		replicas = 1
+	}
+
+	if err = svcs.KubeClient.ScaleDeployment(d, int32(replicas)); err != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
 	return c.SendStatus(fiber.StatusOK)

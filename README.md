@@ -2,8 +2,6 @@
 
 Manually scale up or down your deployments
 
-![screenshot](screenshot/list.png)
-
 ## Requirements
 
 - access to kubeconfig (locally) or service account (in cluster)
@@ -75,6 +73,14 @@ spec:
           value: "3000"
 
 ```
+
+## Screens
+
+### Home
+![screenshot](screenshot/list.png)
+
+### Details
+![screenshot](screenshot/details.png)
 
 
 ## TODO
