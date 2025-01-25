@@ -1,15 +1,18 @@
 # Build the Go binary
 FROM golang:1.23-alpine AS goapp
+
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go mod download
+RUN apk add --no-cache make curl
 RUN go install github.com/a-h/templ/cmd/templ@latest
+
+COPY Makefile go.mod go.sum ./
+RUN go mod download
 
 COPY main.go  .
 COPY internal/ internal/
 
-RUN templ generate
+RUN make all
 RUN go build -o ./goapp
 
 # Build the final image

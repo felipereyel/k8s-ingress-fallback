@@ -49,7 +49,7 @@ func rawPage(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " | scaler</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://unpkg.com/htmx.org@1.9.6\" integrity=\"sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni\" crossorigin=\"anonymous\"></script></head><body class=\"bg-slate-900 text-white max-w-4xl my-0 mx-auto\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " | scaler</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><link rel=\"icon\" type=\"image/x-icon\" href=\"/_statics/favicon.ico\"><script src=\"/_statics/tailwind.js\"></script><script src=\"/_statics/htmx.js\"></script></head><body class=\"bg-slate-900 text-white max-w-4xl my-0 mx-auto\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -201,7 +201,7 @@ func DeploymentListPage(deployments []v1.Deployment) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var9 templ.SafeURL = templ.URL("/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name)
+				var templ_7745c5c3_Var9 templ.SafeURL = templ.URL("/_deployments/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name)
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var9)))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -213,7 +213,7 @@ func DeploymentListPage(deployments []v1.Deployment) templ.Component {
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(dpl.ObjectMeta.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 84, Col: 140}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 85, Col: 153}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -226,7 +226,7 @@ func DeploymentListPage(deployments []v1.Deployment) templ.Component {
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(dpl.ObjectMeta.Namespace)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 87, Col: 211}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 88, Col: 211}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -247,9 +247,9 @@ func DeploymentListPage(deployments []v1.Deployment) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs("/_toggle/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name)
+				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs("/_deployments/" + dpl.ObjectMeta.Namespace + "/" + dpl.ObjectMeta.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 91, Col: 239}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 92, Col: 244}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -314,7 +314,7 @@ func DeploymentDetailsPage(deployment *v1.Deployment) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(deployment.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 122, Col: 52}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 123, Col: 52}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -327,7 +327,7 @@ func DeploymentDetailsPage(deployment *v1.Deployment) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(deployment.ObjectMeta.Namespace)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 130, Col: 68}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 131, Col: 68}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -340,7 +340,7 @@ func DeploymentDetailsPage(deployment *v1.Deployment) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(*deployment.Spec.Replicas)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 138, Col: 81}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 139, Col: 81}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -353,7 +353,7 @@ func DeploymentDetailsPage(deployment *v1.Deployment) templ.Component {
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(deployment.Status.Replicas)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 146, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 147, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {
@@ -374,9 +374,9 @@ func DeploymentDetailsPage(deployment *v1.Deployment) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var19 string
-			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs("/_toggle/" + deployment.ObjectMeta.Namespace + "/" + deployment.ObjectMeta.Name)
+			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs("/_deployments/" + deployment.ObjectMeta.Namespace + "/" + deployment.ObjectMeta.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 155, Col: 263}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/design.templ`, Line: 156, Col: 268}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {

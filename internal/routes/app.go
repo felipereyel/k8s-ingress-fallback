@@ -12,9 +12,10 @@ func GetApp(svcs *services.Services) *fiber.App {
 	})
 
 	app.Get("/", bind(svcs, home))
-	app.Get("/:namespace/:deployment", bind(svcs, details))
-	app.Post("/_toggle/:namespace/:deployment", bind(svcs, toggle))
+	app.Get("/_deployments/:namespace/:deployment", bind(svcs, details))
+	app.Post("/_deployments/:namespace/:deployment", bind(svcs, toggle))
 
+	app.Use("/_statics", staticsHandler)
 	app.Use("/_healthz", healthzHandler)
 	app.Use(notFoundHandler)
 
