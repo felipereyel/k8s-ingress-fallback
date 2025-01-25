@@ -29,7 +29,7 @@ metadata:
 rules:
   - apiGroups: ["apps"]
     resources: ["deployments"]
-    verbs: ["list", "update"]
+    verbs: ["get", "list", "update"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1

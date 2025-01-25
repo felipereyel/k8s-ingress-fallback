@@ -23,7 +23,7 @@ func details(svcs *services.Services, c *fiber.Ctx) error {
 
 	d, err := svcs.KubeClient.GetDeployment(namespace, name)
 	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return err
 	}
 
 	return sendPage(c, components.DeploymentDetailsPage(d))
@@ -36,7 +36,7 @@ func toggle(svcs *services.Services, c *fiber.Ctx) error {
 
 	d, err := svcs.KubeClient.GetDeployment(namespace, name)
 	if err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return err
 	}
 
 	replicas := 0
@@ -45,7 +45,7 @@ func toggle(svcs *services.Services, c *fiber.Ctx) error {
 	}
 
 	if err = svcs.KubeClient.ScaleDeployment(d, int32(replicas)); err != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return err
 	}
 
 	return c.SendStatus(fiber.StatusOK)
