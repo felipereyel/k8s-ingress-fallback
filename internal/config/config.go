@@ -9,11 +9,13 @@ import (
 type ServerConfigs struct {
 	ServerAddress     string
 	UseServiceAccount bool
+	BasicPassword     string
 }
 
 func GetServerConfigs() ServerConfigs {
 	config := ServerConfigs{}
 
+	config.BasicPassword = os.Getenv("BASIC_PASSWORD")
 	config.UseServiceAccount = (os.Getenv("USE_SA") == "true")
 
 	envPort := os.Getenv("PORT")

@@ -14,5 +14,5 @@ func SetupAndListen() error {
 		return err
 	}
 
-	return routes.GetApp(svcs).Listen(cfg.ServerAddress)
+	return routes.GetApp(svcs, cfg).Listen(cfg.ServerAddress)
 }
