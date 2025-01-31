@@ -29,10 +29,10 @@ rules:
   - apiGroups: ["apps"]
     resources: ["deployments"]
     verbs: ["get", "list", "update"]
-  - apiGroups: ["core"]
+  - apiGroups: [""]
     resources: ["services"]
     verbs: ["get"]
-  - apiGroups: ["networking"]
+  - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses"]
     verbs: ["list"]
 
