@@ -1,8 +1,8 @@
 package routes
 
 import (
+	"fallback/internal/embeded"
 	"net/http"
-	"scaler/internal/embeded"
 
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 )

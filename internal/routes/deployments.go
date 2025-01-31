@@ -1,40 +1,28 @@
 package routes
 
 import (
-	"scaler/internal/components"
-	"scaler/internal/services"
+	"fallback/internal/components"
+	"fallback/internal/services"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func home(svcs *services.Services, c *fiber.Ctx) error {
-	deployments, err := svcs.KubeClient.ListDeployments()
-	if err != nil {
-		return err
-	}
-
-	return sendPage(c, components.DeploymentListPage(deployments))
-}
-
 func details(svcs *services.Services, c *fiber.Ctx) error {
-	c.Set("HX-Refresh", "true")
-	namespace := c.Params("namespace")
-	name := c.Params("deployment")
+	hostname := c.Hostname()
 
-	d, err := svcs.KubeClient.GetDeployment(namespace, name)
+	d, err := svcs.KubeClient.GetDeploymentForHostname(hostname)
 	if err != nil {
 		return err
 	}
 
-	return sendPage(c, components.DeploymentDetailsPage(d))
+	return sendPage(c, components.DetailsPage(d))
 }
 
 func toggle(svcs *services.Services, c *fiber.Ctx) error {
 	c.Set("HX-Refresh", "true")
-	namespace := c.Params("namespace")
-	name := c.Params("deployment")
+	hostname := c.Hostname()
 
-	d, err := svcs.KubeClient.GetDeployment(namespace, name)
+	d, err := svcs.KubeClient.GetDeploymentForHostname(hostname)
 	if err != nil {
 		return err
 	}

@@ -1,11 +1,10 @@
-# scaler
+# fallback
 
-Manually scale up or down your deployments
+Manually scale up your unavailable services
 
 ## Requirements
 
 - access to kubeconfig (locally) or service account (in cluster)
-- deployments must have annotation `scaler.reyel.cloud/enabled: "true"`
 
 
 ## Usage
@@ -17,55 +16,61 @@ Deploy the following manifest
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: scaler
+  name: fallback
   namespace: default
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: scaler-role
+  name: fallback-role
   namespace: default
 rules:
   - apiGroups: ["apps"]
     resources: ["deployments"]
     verbs: ["get", "list", "update"]
+  - apiGroups: ["core"]
+    resources: ["services"]
+    verbs: ["get"]
+  - apiGroups: ["networking"]
+    resources: ["ingresses"]
+    verbs: ["list"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: scaler-binding
+  name: fallback-binding
   namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: scaler-role
+  name: fallback-role
 subjects:
   - kind: ServiceAccount
-    name: scaler
+    name: fallback
     namespace: default
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: scaler
+  name: fallback
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: scaler
+      app: fallback
   template:
     metadata:
       labels:
-        app: scaler
+        app: fallback
     spec:
-      serviceAccountName: scaler
+      serviceAccountName: fallback
       containers:
-      - name: scaler
-        image: ghcr.io/felipereyel/k8s-manual-scaler:latest
+      - name: fallback
+        image: ghcr.io/felipereyel/k8s-ingress-fallback:latest
         env:
         - name: USE_SA
           value: "true"
@@ -77,7 +82,4 @@ spec:
 ## Screens
 
 ### Home
-![screenshot](screenshot/list.png)
-
-### Details
-![screenshot](screenshot/details.png)
+![screenshot](screenshot/home.png)

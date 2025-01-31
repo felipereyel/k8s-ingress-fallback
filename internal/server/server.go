@@ -1,9 +1,9 @@
 package server
 
 import (
-	"scaler/internal/config"
-	"scaler/internal/routes"
-	"scaler/internal/services"
+	"fallback/internal/config"
+	"fallback/internal/routes"
+	"fallback/internal/services"
 )
 
 func SetupAndListen() error {

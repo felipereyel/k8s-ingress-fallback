@@ -1,7 +1,7 @@
 package main
 
 import (
-	"scaler/internal/server"
+	"fallback/internal/server"
 )
 
 func main() {

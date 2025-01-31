@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"scaler/internal/services"
+	"fallback/internal/services"
 
 	"github.com/gofiber/fiber/v2"
 )
